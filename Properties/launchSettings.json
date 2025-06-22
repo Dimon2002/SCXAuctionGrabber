@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SCXAuctionGrabber": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
