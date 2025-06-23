@@ -7,6 +7,4 @@ public interface IAuctionRecord
     public double Price { get; }
     
     public int Amount { get; } 
-
-        
 }

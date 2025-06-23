@@ -14,7 +14,7 @@ var serviceProvider = new ServiceCollection()
 var auctionService = serviceProvider.GetService<IAuctionService>();
 await auctionService!.Setup();
 
-var item = await auctionService.GetItemAuctionHistoryAsync("55olq");
+var item = await auctionService.GetItemAuctionHistoryAsync("rjvwy");
 
 PrintItemInfo(item);
 
@@ -25,7 +25,7 @@ static void PrintItemInfo(IItem item)
     Console.WriteLine($"Item: {baseItem.Name} ({baseItem.Id})");
 
     Console.WriteLine("\nAuction history:");
-    foreach (var record in baseItem!.Records.OrderBy(e => e.Price))
+    foreach (var record in baseItem.Records.OrderBy(e => e.Price))
     {
         Console.WriteLine($"{record.TimeStamp}: {record.Price:F2} RUB {record.Amount} шт");
     }

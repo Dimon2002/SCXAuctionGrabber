@@ -1,2 +1,15 @@
 ﻿https://stalcraft.wiki/_next/data/uirhDfCccrYCmPxDIZkBA/ru/items/other/55olq.json?category=other&item=55olq
 https://stalcraft.wiki/_next/data/uirhDfCccrYCmPxDIZkBA/ru/items/other/0rl9k.json?category=other&item=0rl9k
+
+
+1. Аналитика полученных данных
+2. Получение данных по множеству предметов
+3. Рисовалка по конкретному item
+	3.1 Добавить опцию конфига, где будут задаваться предметы
+	3.2 Экспортер
+4. Additional в ДТО
+5. Обернуть в Docker
+6. Через Get запросы опция получать данные
+7. Повторные запросы к API при сбое
+8. Кеширование (redis/memory cash), Логирование, Хеширование
+9. БД, Пагинация

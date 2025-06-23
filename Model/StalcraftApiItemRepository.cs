@@ -17,7 +17,7 @@ public class StalcraftApiItemRepository : IItemRepository
 
     private readonly HttpClient _httpClient;
 
-    private string _buildId = "uirhDfCccrYCmPxDIZkB"; // BuildID
+    private string _buildId = "uirhDfCccrYCmPxDIZkBA";
 
     public StalcraftApiItemRepository(HttpClient httpClient)
     {
@@ -54,8 +54,8 @@ public class StalcraftApiItemRepository : IItemRepository
     {
         var url = $"{WikiDataUrl}/{_buildId}/ru/items/other/{exbo_id}.json?category=other&item={exbo_id}";
 
-        var httpRequest = new HttpRequestMessage(HttpMethod.Get, url);
-        var httpResponse = await _httpClient.SendAsync(httpRequest);
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Get, url);
+        using var httpResponse = await _httpClient.SendAsync(httpRequest);
         if (!httpResponse.IsSuccessStatusCode)
         {
             var error = await httpResponse.Content.ReadAsStringAsync();
@@ -75,13 +75,14 @@ public class StalcraftApiItemRepository : IItemRepository
 
     private async Task<(HttpStatusCode, IEnumerable<AuctionEntryDTO>, string)> GetPricesAsync(string exbo_id)
     {
-        var url = $"{BaseUrl}/auction-history?region=ru&id={exbo_id}";
+        var uri = $"{BaseUrl}/auction-history?region=ru&id={exbo_id}";
 
-        var httpRequest = new HttpRequestMessage(HttpMethod.Get, url);
-        var httpResponse = await _httpClient.SendAsync(httpRequest);
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uri);
+        using var httpResponse = await _httpClient.SendAsync(httpRequest);
         if (!httpResponse.IsSuccessStatusCode)
         {
             var error = await httpResponse.Content.ReadAsStringAsync();
+
             return new(httpResponse.StatusCode, [], error);
         }
 
@@ -98,13 +99,14 @@ public class StalcraftApiItemRepository : IItemRepository
 
     public async Task UpdateBuildIdAsync()
     {
-        var url = "https://stalcraft.wiki";
+        const string uri = "https://stalcraft.wiki";
         
-        var httpRequest = new HttpRequestMessage(HttpMethod.Get, url);
-        var httpResponse = await _httpClient.SendAsync(httpRequest);
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uri);
+        using var httpResponse = await _httpClient.SendAsync(httpRequest);
         if (!httpResponse.IsSuccessStatusCode)
         {
             var error = await httpResponse.Content.ReadAsStringAsync();
+
             return;
         }
         var responseContentString = await httpResponse.Content.ReadAsStringAsync();
