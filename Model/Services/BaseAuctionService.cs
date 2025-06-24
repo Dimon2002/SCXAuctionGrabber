@@ -1,6 +1,7 @@
 ﻿using SCXAuctionGrabber.Domain.Base;
 using SCXAuctionGrabber.Domain.Interfaces;
 using SCXAuctionGrabber.Model.Interfaces;
+using System.Net;
 
 namespace SCXAuctionGrabber.Model.Services;
 
@@ -22,7 +23,7 @@ public class BaseAuctionService : IAuctionService
     {
         var requestResult = await _itemRepository.GetItemByIdAsync(itemId);
 
-        if (requestResult.StatusCode != System.Net.HttpStatusCode.OK) 
+        if (requestResult.StatusCode != HttpStatusCode.OK) 
         {
             // TODO: logger
             Console.WriteLine($"[{DateTime.Now}] the item ({itemId}) contains an error {requestResult.Error}");
