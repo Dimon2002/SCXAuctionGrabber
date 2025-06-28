@@ -1,4 +1,4 @@
-﻿using SCXAuctionGrabber.Domain.Base;
+﻿using SCXAuctionGrabber.Domain.DataStructures;
 using SCXAuctionGrabber.Domain.Interfaces;
 using SCXAuctionGrabber.Model.Interfaces;
 using System.Net;
@@ -16,12 +16,12 @@ public class BaseAuctionService : IAuctionService
 
     public async Task Setup()
     {
-        await _itemRepository.UpdateBuildIdAsync();
+        await _itemRepository.UpdateBuildIDAsync();
     }
 
-    public async Task<IItem> GetItemAuctionHistoryAsync(string itemId)
+    public async Task<IItem> GetItemAuctionHistoryAsync(string itemId, ItemCategory category)
     {
-        var requestResult = await _itemRepository.GetItemByIdAsync(itemId);
+        var requestResult = await _itemRepository.GetItemByIdAsync(itemId, category);
 
         if (requestResult.StatusCode != HttpStatusCode.OK) 
         {
@@ -32,15 +32,10 @@ public class BaseAuctionService : IAuctionService
         return requestResult.Result;
     }
 
-    public async Task<IList<IAuctionRecord>> GetItemAuctionRecordsAsync(string itemId)
+    public async Task<IList<IAuctionRecord>> GetItemAuctionRecordsAsync(string itemId, ItemCategory category)
     {
-        var response = await _itemRepository.GetItemByIdAsync(itemId);
+        var response = await _itemRepository.GetItemByIdAsync(itemId, category);
 
-        if (response.Result is not Item item)
-        {
-            return [];
-        }
-     
-        return item.Records;
+        return response.Result.Records;
     }
 }

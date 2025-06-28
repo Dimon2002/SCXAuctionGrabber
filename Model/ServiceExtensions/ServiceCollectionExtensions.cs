@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SCXAuctionGrabber.Domain.Base;
 using SCXAuctionGrabber.Model.Interfaces;
 using SCXAuctionGrabber.Model.Services;
 

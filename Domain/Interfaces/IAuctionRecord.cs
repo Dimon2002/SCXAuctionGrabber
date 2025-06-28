@@ -1,4 +1,6 @@
-﻿namespace SCXAuctionGrabber.Domain.Interfaces;
+﻿using SCXAuctionGrabber.Domain.Base;
+
+namespace SCXAuctionGrabber.Domain.Interfaces;
 
 public interface IAuctionRecord
 {
@@ -7,4 +9,6 @@ public interface IAuctionRecord
     public double Price { get; }
     
     public int Amount { get; } 
+
+    public Additional? Additional { get; }
 }

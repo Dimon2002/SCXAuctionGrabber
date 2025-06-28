@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SCXAuctionGrabber.Domain.Base;
+using SCXAuctionGrabber.Domain.DataStructures;
 using SCXAuctionGrabber.Model.DTO;
 using SCXAuctionGrabber.Model.Factory;
 using SCXAuctionGrabber.Model.Interfaces;
@@ -19,14 +20,31 @@ public class StalcraftApiItemRepository : IItemRepository
 
     private string _buildId = "uirhDfCccrYCmPxDIZkBA";
 
+    private readonly Dictionary<ItemCategory, string> Categorys = new()
+    {
+        { ItemCategory.Weapon, "weapon" },
+        { ItemCategory.Armor, "armor" },
+        { ItemCategory.Artefacts, "artefacts" },
+        { ItemCategory.Attachments, "attachments" },
+        { ItemCategory.Devices, "devices" },
+        { ItemCategory.Containers, "containers" },
+        { ItemCategory.Consumables, "consumables" },
+        { ItemCategory.Other, "other" },
+    };
+
     public StalcraftApiItemRepository(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
 
-    public async Task<RequestResult> GetItemByIdAsync(string exbo_id)
+    public async Task<RequestResult> GetItemByIdAsync(string exbo_id, ItemCategory category)
     {
-        var namePair = await GetNameAsync(exbo_id);
+        if (!Categorys.TryGetValue(category, out var result))
+        {
+            return new RequestResult(HttpStatusCode.BadRequest, null, $"Category {category} does not exist");
+        }
+
+        var namePair = await GetNameAsync(exbo_id, result);
 
         if (namePair.Item1 != HttpStatusCode.OK)
         {
@@ -50,9 +68,9 @@ public class StalcraftApiItemRepository : IItemRepository
         return new RequestResult(pricesPair.Item1, item, string.Empty);
     }
 
-    private async Task<(HttpStatusCode, string, string)> GetNameAsync(string exbo_id)
+    private async Task<(HttpStatusCode, string, string)> GetNameAsync(string exbo_id, string category)
     {
-        var url = $"{WikiDataUrl}/{_buildId}/ru/items/other/{exbo_id}.json?category=other&item={exbo_id}";
+        var url = $"{WikiDataUrl}/{_buildId}/ru/items/{category}/{exbo_id}.json?category={category}&item={exbo_id}";
 
         using var httpRequest = new HttpRequestMessage(HttpMethod.Get, url);
         using var httpResponse = await _httpClient.SendAsync(httpRequest);
@@ -97,10 +115,10 @@ public class StalcraftApiItemRepository : IItemRepository
         return (httpResponse.StatusCode, auctionData.Prices, string.Empty);
     }
 
-    public async Task UpdateBuildIdAsync()
+    public async Task UpdateBuildIDAsync()
     {
         const string uri = "https://stalcraft.wiki";
-        
+
         using var httpRequest = new HttpRequestMessage(HttpMethod.Get, uri);
         using var httpResponse = await _httpClient.SendAsync(httpRequest);
         if (!httpResponse.IsSuccessStatusCode)
@@ -117,7 +135,7 @@ public class StalcraftApiItemRepository : IItemRepository
             var end = responseContentString.IndexOf("</script>", start);
             var json = responseContentString[start..end];
             var match = Regex.Match(json, "\"buildId\":\"([^\"]+)\"");
-            
+
             if (match.Success)
             {
                 _buildId = match.Groups[1].Value;

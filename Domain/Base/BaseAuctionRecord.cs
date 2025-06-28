@@ -10,6 +10,8 @@ public class BaseAuctionRecord : IAuctionRecord
 
     public int Amount { get; }
 
+    public Additional? Additional { get; }
+
     public BaseAuctionRecord(DateTime date, double price, int amount)
     {
         TimeStamp = date;

@@ -1,9 +1,10 @@
-﻿using SCXAuctionGrabber.Model.Storage;
+﻿using SCXAuctionGrabber.Domain.DataStructures;
+using SCXAuctionGrabber.Model.Storage;
 
 namespace SCXAuctionGrabber.Model.Interfaces;
 
 public interface IItemRepository
 {
-    Task UpdateBuildIdAsync();
-    Task<RequestResult> GetItemByIdAsync(string id);
+    Task UpdateBuildIDAsync();
+    Task<RequestResult> GetItemByIdAsync(string id, ItemCategory category);
 }
