@@ -12,7 +12,7 @@ Attachments:
   
 # Устройства
 Devices:
-
+gdj6
 # Рюкзаки и контейнеры
 Containers:
 

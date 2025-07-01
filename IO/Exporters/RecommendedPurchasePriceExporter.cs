@@ -1,4 +1,6 @@
-﻿using SCXAuctionGrabber.Domain.Interfaces;
+﻿using Microsoft.Extensions.Logging;
+using SCXAuctionGrabber.AuctionGrabberService;
+using SCXAuctionGrabber.Domain.Interfaces;
 using SCXAuctionGrabber.IO.Interfaces;
 using SCXAuctionGrabber.MathStatistics;
 using System.Text;

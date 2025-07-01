@@ -1,4 +1,5 @@
-﻿using SCXAuctionGrabber.Domain.DataStructures;
+﻿using Microsoft.Extensions.Logging;
+using SCXAuctionGrabber.Domain.DataStructures;
 using SCXAuctionGrabber.Domain.Interfaces;
 using SCXAuctionGrabber.Model.Interfaces;
 using System.Net;
@@ -7,11 +8,15 @@ namespace SCXAuctionGrabber.Model.Services;
 
 public class BaseAuctionService : IAuctionService
 {
+    private readonly ILogger<BaseAuctionService> _logger;
     private readonly IItemRepository _itemRepository;
 
-    public BaseAuctionService(IItemRepository itemRepository)
+    public BaseAuctionService(
+        IItemRepository itemRepository, 
+        ILogger<BaseAuctionService> logger)
     {
         _itemRepository = itemRepository;
+        _logger = logger;
     }
 
     public async Task Setup()
@@ -25,8 +30,7 @@ public class BaseAuctionService : IAuctionService
 
         if (requestResult.StatusCode != HttpStatusCode.OK) 
         {
-            // TODO: logger
-            Console.WriteLine($"[{DateTime.Now}] the item ({itemId}) contains an error {requestResult.Error}");
+            _logger.LogError("[{DateTime}] the item ({itemId}) contains an error {requestResult.Error}", DateTime.Now, itemId, requestResult.Error);
         }
 
         return requestResult.Result;
