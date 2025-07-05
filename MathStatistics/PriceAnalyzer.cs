@@ -2,7 +2,7 @@
 
 namespace SCXAuctionGrabber.MathStatistics;
 
-public class ItemPriceAnalyzer
+public class PriceAnalyzer
 {
     public static double CalculateStrategicPrice(
     IEnumerable<IAuctionRecord>? records,

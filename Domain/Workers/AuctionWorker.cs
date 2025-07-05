@@ -2,12 +2,13 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SCXAuctionGrabber.Domain.Base;
+using SCXAuctionGrabber.Domain.DataStructures;
 using SCXAuctionGrabber.IO.Exporters;
 using SCXAuctionGrabber.IO.Interfaces;
 using SCXAuctionGrabber.Model.Interfaces;
 using System.Text.RegularExpressions;
 
-namespace SCXAuctionGrabber.AuctionGrabberService;
+namespace SCXAuctionGrabber.Domain.Workers;
 
 public class AuctionWorker : BackgroundService
 {
@@ -44,13 +45,13 @@ public class AuctionWorker : BackgroundService
         await _auctionService.Setup();
         _recommendedExporter.Setup(Path.Combine(BasePath, OutputFolder, recommendedPriceFileName));
 
+        var itemsRequest = _reader.Parse(Path.Combine(BasePath, InputFolder, "ItemsList.txt"));
+
         while (!stoppingToken.IsCancellationRequested)
         {
             try
             {
                 _logger.LogInformation("Starting processing..");
-
-                var itemsRequest = _reader.Parse(Path.Combine(BasePath, InputFolder, "ItemsList.txt"));
 
                 foreach (var itemRequest in itemsRequest)
                 {
@@ -75,13 +76,13 @@ public class AuctionWorker : BackgroundService
                 _recommendedExporter.FinalizeExport();
                 _logger.LogInformation("Processing completed successfully");
 
-                await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(_settings.IntervalMinutes), stoppingToken);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Forced stop");
 
-                await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(_settings.IntervalMinutes), stoppingToken);
             }
         }
     }

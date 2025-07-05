@@ -1,0 +1,6 @@
+@SCXAuctionGrabber.Host_HostAddress = http://localhost:5062
+
+GET {{SCXAuctionGrabber.Host_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

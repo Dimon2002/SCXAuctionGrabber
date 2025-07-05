@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using SCXAuctionGrabber.AuctionGrabberService;
-using SCXAuctionGrabber.Domain.Interfaces;
+﻿using SCXAuctionGrabber.Domain.Interfaces;
 using SCXAuctionGrabber.IO.Interfaces;
 using SCXAuctionGrabber.MathStatistics;
 using System.Text;
@@ -9,7 +7,7 @@ namespace SCXAuctionGrabber.IO.Exporters;
 
 public class RecommendedPurchasePriceExporter : IExporter
 {
-    public Func<IList<IAuctionRecord>, double> RecommendedPrice => ItemPriceAnalyzer.RecommendedPrice;
+    public Func<IList<IAuctionRecord>, double> RecommendedPrice => PriceAnalyzer.RecommendedPrice;
 
     public void Setup(string filePath)
     {

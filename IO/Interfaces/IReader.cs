@@ -2,5 +2,5 @@
 
 public interface IReader
 {
-    public IEnumerable<ItemRequest> Parse(string path);
+    public IEnumerable<ItemParams> Parse(string path);
 }

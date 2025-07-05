@@ -5,7 +5,7 @@ namespace SCXAuctionGrabber.IO.Readers;
 
 public class ItemParamsReader : IReader
 {
-    public IEnumerable<ItemRequest> Parse(string path)
+    public IEnumerable<ItemParams> Parse(string path)
     {
         using var reader = new StreamReader(path);
         ItemCategory? currentCategory = null;
@@ -56,7 +56,7 @@ public class ItemParamsReader : IReader
         }
     }
 
-    private static IEnumerable<ItemRequest> ProcessIds(string input, ItemCategory category)
+    private static IEnumerable<ItemParams> ProcessIds(string input, ItemCategory category)
     {
         var items = input.Split([','], StringSplitOptions.RemoveEmptyEntries);
 
@@ -65,7 +65,7 @@ public class ItemParamsReader : IReader
             var id = item.Trim();
             if (!string.IsNullOrEmpty(id))
             {
-                yield return new ItemRequest
+                yield return new ItemParams
                 {
                     Category = category,
                     Id = id

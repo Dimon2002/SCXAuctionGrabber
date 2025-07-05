@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SCXAuctionGrabber.AuctionGrabberService;
+namespace SCXAuctionGrabber.Domain.DataStructures;
 
 public class AppSettings
 {
